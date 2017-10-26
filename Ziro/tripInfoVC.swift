@@ -22,7 +22,7 @@ class tripInfoVC: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-//		self.tableView.reloadData()
+		self.tableView.reloadData()
 		
 		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
 			return

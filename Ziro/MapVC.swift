@@ -16,15 +16,17 @@ protocol HandleMapSearch: class {
 	func dropPinZoomIn(_ placemark: MKPlacemark)
 }
 
-class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISearchBarDelegate {
-	//Var for simple variables
+class MapVC: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UISearchBarDelegate {
+	//Var for basic variables
 	var locationManager:CLLocationManager!
 	var pointAnnotation:CustomPointAnnotation!
 	var pinAnnotationView:MKPinAnnotationView!
 	var selectedPin: MKPlacemark?
 	var resultSearchController:UISearchController!
-	var index = 0, indexA = 0, startRecordOrNot = 0, firstFetchHealth = 0, indexAFlag = 0 //flag
-	var initialStepsCount = 0
+	var index = 0, indexA = 0, startRecordOrNot = 0, firstFetchHealth = 0, indexAFlag = 0, UpdateFlag = 0 //flag
+	var initialStepsCount = 0  //steps
+	var lastLoaction: CLLocationCoordinate2D? = nil
+	var destLocation: CLLocation? = nil
 	//Var for core data
 	var geoPoints: [NSManagedObject] = []
 	var tripName: [NSManagedObject] = []
@@ -71,7 +73,6 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 		}
 	}
 	
-	
 	@IBAction func searchButton(_ sender: Any) {
 		//handle Search
 		let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
@@ -116,11 +117,8 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 		recordButton.setTitle(myButtonStateArr[indexA % myArray.count], for: .normal)
 	}
 	
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		//Some UI Modification
 		recordButton.layer.cornerRadius = 5
 		
 		map.delegate = self
@@ -160,18 +158,23 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 		let span:MKCoordinateSpan = MKCoordinateSpanMake(latDelta, lonDelta)
 		let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longtitude)
 		let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+		if UpdateFlag == 0 {
+			addSingleAnnotation(subtitle: "Start Point", userLocation: userLocation)
+		}
+		else if UpdateFlag == 1{
+			let polyline = MKPolyline(coordinates: [lastLoaction!,location], count: 2)
+			self.map.add(polyline)
+		}
+		else if UpdateFlag == 2{
+			addSingleAnnotation(subtitle: "Destination", userLocation: userLocation)
+		}
+		lastLoaction = location
+		destLocation = userLocation
+		UpdateFlag = 1
+		
 
 		map.setRegion(region, animated: true)
-		
-		pointAnnotation = CustomPointAnnotation()
-		pointAnnotation.imageName = "ann"
-		pointAnnotation.coordinate.latitude = userLocation.coordinate.latitude
-		pointAnnotation.coordinate.longitude = userLocation.coordinate.longitude
-		pointAnnotation.title = "Zzzzix"
-		pointAnnotation.subtitle = "You are moving.."
-		pinAnnotationView = MKPinAnnotationView(annotation: pointAnnotation, reuseIdentifier: "pin")
-		map.addAnnotation(pinAnnotationView.annotation!)
-		selectedPin = pinAnnotationView.annotation! as? MKPlacemark
+
 
 		//Update and Print stepsCount
 		getTodaysSteps(completion: { (stepRetrieved) in
@@ -183,13 +186,31 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 		let hour = calendar.component(.hour, from: date)
 		let minutes = calendar.component(.minute, from: date)
 		let seconds = calendar.component(.second, from: date)
-		print("hours = \(hour):\(minutes):\(seconds)")
+		print("time = \(hour):\(minutes):\(seconds)")
 		print(latitude, longtitude)
 		
 		//Save to Local Data
 		self.save(name: "\(userLocation.coordinate.latitude),\(userLocation.coordinate.longitude)", EntityName: "Location", KeyPathName: "geoPoint", Object: geoPoints)
 	}
 
+	func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+		if overlay is MKCircle {
+			let renderer = MKCircleRenderer(overlay: overlay)
+			renderer.fillColor = UIColor.black.withAlphaComponent(0.5)
+			renderer.strokeColor = UIColor.blue
+			renderer.lineWidth = 2
+			return renderer
+			
+		} else if overlay is MKPolyline {
+			let renderer = MKPolylineRenderer(overlay: overlay)
+			renderer.strokeColor = UIColor.blue
+			renderer.lineWidth = 3
+			return renderer
+			
+		}
+		return MKOverlayRenderer()
+	}
+	
 	func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 		guard !annotation.isKind(of: MKUserLocation.self) else {
 			return nil
@@ -211,6 +232,7 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 		}
 		
 		annotationView!.image = UIImage(named: "annn")
+		annotationView?.isEnabled = true
 		annotationView?.canShowCallout = true
 		let smallSquare = CGSize(width: 30, height: 30)
 		let button = UIButton(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: smallSquare))
@@ -267,6 +289,18 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 		}
 	}
 
+	func addSingleAnnotation(subtitle: String, userLocation: CLLocation) {
+		
+		pointAnnotation = CustomPointAnnotation()
+		pointAnnotation.imageName = "ann"
+		pointAnnotation.coordinate.latitude = userLocation.coordinate.latitude
+		pointAnnotation.coordinate.longitude = userLocation.coordinate.longitude
+		pointAnnotation.title = "User Name"
+		pointAnnotation.subtitle = subtitle
+		pinAnnotationView = MKPinAnnotationView(annotation: pointAnnotation, reuseIdentifier: "pin")
+		map.addAnnotation(pinAnnotationView.annotation!)
+		selectedPin = pinAnnotationView.annotation! as? MKPlacemark
+	}
 	
 	//Health Helper Function
 	func getTodaysSteps(completion: @escaping (Double) -> Void) {
@@ -308,76 +342,6 @@ class MapVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate,UISear
 	}
 	
 	
-	// Alert Helper Function
-	func createAlert(title: String, message: String){
-		let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-		
-		let okAction = UIAlertAction(title: "I got it", style: UIAlertActionStyle.default)
-		{
-			(result : UIAlertAction) -> Void in
-			print("You pressed OK")
-		}
-		
-		alertController.addAction(okAction)
-		self.present(alertController, animated: true, completion: nil)
-	}
-	func createCancelAlert(title: String, message: String){
-		let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-		
-		let okAction = UIAlertAction(title: "Do it", style: UIAlertActionStyle.default)
-		{
-			(result : UIAlertAction) -> Void in
-			print("You pressed Do it")
-			//flag
-			self.startRecordOrNot = 0
-			//如果左上角是play 改变为x
-			self.index = 0
-			self.indexA = 0
-			self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: self.myArray[1 % self.myArray.count], target: self, action: #selector(MapVC.stop(_:)))
-			self.recordButton.setTitle(self.myButtonStateArr[0 % self.myArray.count], for: .normal)
-			self.locationManager.stopUpdatingLocation()
-			self.map.removeAnnotations(self.map.annotations)
-			self.stepNumberLabel.text = "Step Number"
-			print("stop!")
-			return
-		}
-		
-		let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
-		{
-			(result : UIAlertAction) -> Void in
-			print("You pressed CANCEL")
-		}
-		
-		alertController.addAction(okAction)
-		alertController.addAction(cancelAction)
-		self.present(alertController, animated: true, completion: nil)
-	}
-	func createAskTripnameAlert(title: String, message:String){
-		let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-		
-		let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
-			alert -> Void in
-			
-			let firstTextField = alertController.textFields![0] as UITextField
-			
-			print("firstName \(String(describing: firstTextField.text))")
-			self.saveName(name: "\(String(describing: firstTextField.text))", EntityName: "Trip", KeyPathName: "name", Object: self.tripName)
-		})
-		
-		let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
-			(action : UIAlertAction!) -> Void in
-			self.saveName(name: "Default Trip", EntityName: "Trip", KeyPathName: "name", Object: self.tripName)
-		})
-		
-		alertController.addTextField { (textField : UITextField!) -> Void in
-			textField.placeholder = "Enter Trip Name"
-		}
-		
-		alertController.addAction(saveAction)
-		alertController.addAction(cancelAction)
-		
-		self.present(alertController, animated: true, completion: nil)
-	}
 }
 
 
@@ -414,6 +378,76 @@ private extension MapVC {
 				print(error.debugDescription)
 			}
 		})
+	}
+	// Alert Helper Function
+	func createAlert(title: String, message: String){
+		let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+		
+		let okAction = UIAlertAction(title: "I got it", style: UIAlertActionStyle.default)
+		{
+			(result : UIAlertAction) -> Void in
+			print("You pressed OK")
+		}
+		
+		alertController.addAction(okAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
+	func createCancelAlert(title: String, message: String){
+		let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+		
+		let okAction = UIAlertAction(title: "Do it", style: UIAlertActionStyle.default)
+		{
+			(result : UIAlertAction) -> Void in
+			print("You pressed Do it")
+			//flag
+			self.startRecordOrNot = 0
+			self.UpdateFlag = 2
+			
+			//如果左上角是play 改变为x
+			self.index = 0;	self.indexA = 0
+			self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: self.myArray[1 % self.myArray.count], target: self, action: #selector(MapVC.stop(_:)))
+			self.recordButton.setTitle(self.myButtonStateArr[0 % self.myArray.count], for: .normal)
+			self.locationManager.stopUpdatingLocation()
+			self.addSingleAnnotation(subtitle: "Destination", userLocation: self.destLocation!)
+//			self.map.removeAnnotations(self.map.annotations)
+			self.stepNumberLabel.text = "Step Number"
+			return
+		}
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+		{
+			(result : UIAlertAction) -> Void in
+			print("You pressed CANCEL")
+		}
+		
+		alertController.addAction(okAction)
+		alertController.addAction(cancelAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
+	func createAskTripnameAlert(title: String, message:String){
+		let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+		
+		let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
+			alert -> Void in
+			
+			let firstTextField = alertController.textFields![0] as UITextField
+			
+			print("firstName \(String(describing: firstTextField.text))")
+			self.saveName(name: "\(String(describing: firstTextField.text))", EntityName: "Trip", KeyPathName: "name", Object: self.tripName)
+		})
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {
+			(action : UIAlertAction!) -> Void in
+			self.saveName(name: "Default Trip", EntityName: "Trip", KeyPathName: "name", Object: self.tripName)
+		})
+		
+		alertController.addTextField { (textField : UITextField!) -> Void in
+			textField.placeholder = "Enter Trip Name"
+		}
+		
+		alertController.addAction(saveAction)
+		alertController.addAction(cancelAction)
+		self.present(alertController, animated: true, completion: nil)
 	}
 
 }

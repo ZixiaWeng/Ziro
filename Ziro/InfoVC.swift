@@ -95,7 +95,6 @@ class InfoVC: UIViewController{
 		self.present(alertController, animated: true, completion: nil)
 	}
 
-//
 //	func save(name: String) {
 //		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
 //			return

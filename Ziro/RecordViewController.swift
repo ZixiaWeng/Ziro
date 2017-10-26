@@ -93,7 +93,7 @@ class RecordViewController: UIViewController,MKMapViewDelegate,CLLocationManager
 		locationManager.delegate = self
 		locationManager.desiredAccuracy = kCLLocationAccuracyBest
 		locationManager.requestWhenInUseAuthorization()
-
+		
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -108,7 +108,7 @@ class RecordViewController: UIViewController,MKMapViewDelegate,CLLocationManager
 		let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
 		mapItem.openInMaps(launchOptions:launchOptions)
 	}
-	
+
 	func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 		guard !annotation.isKind(of: MKUserLocation.self) else {
 			return nil

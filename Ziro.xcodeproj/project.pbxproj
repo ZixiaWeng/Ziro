@@ -11,12 +11,14 @@
 		A5136D9A1F3626B100C58301 /* InfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5136D991F3626B100C58301 /* InfoVC.swift */; };
 		A5136D9C1F3633D600C58301 /* tripInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5136D9B1F3633D600C58301 /* tripInfoVC.swift */; };
 		A5136DA01F3787EC00C58301 /* CustomTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5136D9F1F3787EC00C58301 /* CustomTabelViewCell.swift */; };
+		A52AD6B31FA1B013003E9A65 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52AD6B21FA1B013003E9A65 /* SettingTableViewController.swift */; };
 		A53FD7E51F49B30600528165 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53FD7E41F49B30600528165 /* RecordViewController.swift */; };
 		A58F246D1F2CFEC80003D7E7 /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58F246C1F2CFEC80003D7E7 /* CustomPointAnnotation.swift */; };
 		A58F24721F2D8F340003D7E7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58F24711F2D8F340003D7E7 /* MapKit.framework */; };
 		A58F24741F2F56A60003D7E7 /* LocationSeachTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58F24731F2F56A60003D7E7 /* LocationSeachTable.swift */; };
 		A58F24761F3361ED0003D7E7 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58F24751F3361ED0003D7E7 /* HealthKit.framework */; };
 		A58F24791F339DE80003D7E7 /* HealthKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58F24781F339DE80003D7E7 /* HealthKitHelper.swift */; };
+		A5CA13B71FA1DD65004BBC97 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CA13B61FA1DD65004BBC97 /* SettingVC.swift */; };
 		A5E0AD8E1F1D0B0A00BB38E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E0AD8D1F1D0B0A00BB38E6 /* AppDelegate.swift */; };
 		A5E0AD901F1D0B0A00BB38E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E0AD8F1F1D0B0A00BB38E6 /* ViewController.swift */; };
 		A5E0AD931F1D0B0A00BB38E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5E0AD911F1D0B0A00BB38E6 /* Main.storyboard */; };
@@ -50,6 +52,7 @@
 		A5136D991F3626B100C58301 /* InfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoVC.swift; sourceTree = "<group>"; };
 		A5136D9B1F3633D600C58301 /* tripInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tripInfoVC.swift; sourceTree = "<group>"; };
 		A5136D9F1F3787EC00C58301 /* CustomTabelViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabelViewCell.swift; sourceTree = "<group>"; };
+		A52AD6B21FA1B013003E9A65 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		A53FD7E41F49B30600528165 /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A58F246C1F2CFEC80003D7E7 /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		A58F24711F2D8F340003D7E7 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -57,6 +60,7 @@
 		A58F24751F3361ED0003D7E7 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		A58F24771F3361ED0003D7E7 /* Ziro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ziro.entitlements; sourceTree = "<group>"; };
 		A58F24781F339DE80003D7E7 /* HealthKitHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitHelper.swift; sourceTree = "<group>"; };
+		A5CA13B61FA1DD65004BBC97 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		A5E0AD8A1F1D0B0A00BB38E6 /* Ziro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ziro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E0AD8D1F1D0B0A00BB38E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5E0AD8F1F1D0B0A00BB38E6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -149,15 +153,17 @@
 		A5E0AD8C1F1D0B0A00BB38E6 /* Ziro */ = {
 			isa = PBXGroup;
 			children = (
-				A5E0AD8D1F1D0B0A00BB38E6 /* AppDelegate.swift */,
 				A58F24771F3361ED0003D7E7 /* Ziro.entitlements */,
+				A5E0AD8D1F1D0B0A00BB38E6 /* AppDelegate.swift */,
 				A5E0ADBB1F1D151D00BB38E6 /* PageVC.swift */,
 				A5136D981F36256B00C58301 /* pageVC */,
 				A5E0AD8F1F1D0B0A00BB38E6 /* ViewController.swift */,
-				A5E0AD911F1D0B0A00BB38E6 /* Main.storyboard */,
 				A53FD7E41F49B30600528165 /* RecordViewController.swift */,
-				A5E0AD941F1D0B0A00BB38E6 /* Assets.xcassets */,
+				A52AD6B21FA1B013003E9A65 /* SettingTableViewController.swift */,
+				A5CA13B61FA1DD65004BBC97 /* SettingVC.swift */,
+				A5E0AD911F1D0B0A00BB38E6 /* Main.storyboard */,
 				A5E0AD961F1D0B0A00BB38E6 /* LaunchScreen.storyboard */,
+				A5E0AD941F1D0B0A00BB38E6 /* Assets.xcassets */,
 				A5E0AD991F1D0B0A00BB38E6 /* Info.plist */,
 			);
 			path = Ziro;
@@ -329,6 +335,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A52AD6B31FA1B013003E9A65 /* SettingTableViewController.swift in Sources */,
+				A5CA13B71FA1DD65004BBC97 /* SettingVC.swift in Sources */,
 				A58F24741F2F56A60003D7E7 /* LocationSeachTable.swift in Sources */,
 				A58F24791F339DE80003D7E7 /* HealthKitHelper.swift in Sources */,
 				A5E0AD901F1D0B0A00BB38E6 /* ViewController.swift in Sources */,
