@@ -13,11 +13,12 @@ import Photos
 class SettingVC: UITableViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 	@IBOutlet weak var userImageView: UIImageView!
 	let myPickerController = UIImagePickerController()
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		checkPermission()
 		let singleTap = UITapGestureRecognizer(target: self, action: #selector(SettingTableViewController.userImageTapDetected))
-		singleTap.numberOfTapsRequired = 1 // you can change this value
+		singleTap.numberOfTapsRequired = 2 // you can change this value
 		userImageView.isUserInteractionEnabled = true
 		userImageView.addGestureRecognizer(singleTap)
 		myPickerController.delegate = self
@@ -31,14 +32,13 @@ class SettingVC: UITableViewController, UIImagePickerControllerDelegate,UINaviga
 	func userImageTapDetected() {
 		print("userImageTapDetected")
 		myPickerController.allowsEditing = false
-		myPickerController.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
-		myPickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
+		myPickerController.delegate = self
+		myPickerController.sourceType = .photoLibrary
 		
 		self.present(myPickerController, animated: true, completion: nil)
 		
 	}
-	private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
-		
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
 	{
 		print("hellp")
 		if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {

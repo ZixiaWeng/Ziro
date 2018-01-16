@@ -11,6 +11,7 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
 	@IBOutlet weak var cellName: UILabel!
+	@IBOutlet weak var biubiu: UILabel!
 	@IBOutlet weak var startTime: UILabel!
 	
 	@IBOutlet weak var endTime: UILabel!

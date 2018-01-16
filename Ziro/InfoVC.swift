@@ -9,6 +9,12 @@
 import UIKit
 import CoreData
 
+class TripTableViewCell: UITableViewCell {
+	
+	@IBOutlet weak var cellName: UILabel!
+}
+
+
 class InfoVC: UIViewController{
 	
 	@IBOutlet weak var tableView: UITableView!
@@ -136,10 +142,13 @@ extension InfoVC: UITableViewDataSource, UITableViewDelegate {
 		                                         for: indexPath) as! CustomTableViewCell
 		
 		let a = name.value(forKeyPath: "name") as? String
+
 		if let start = a?.range(of: "("),
 			let end  = a?.range(of: ")", range: start.upperBound..<(a?.endIndex)!) {
 			let substring = a?[start.upperBound..<end.lowerBound]
-			cell.cellName.text = substring
+			print(substring!, "hello")
+
+			cell.cellName.text = substring!
 		} else {
 			print("invalid input")
 		}
